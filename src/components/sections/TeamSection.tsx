@@ -25,7 +25,7 @@ function TeamSection() {
   ];
   return (
     <section className="mt-[9rem]">
-      <Header title="our team" subtitle="Meet The Team" />
+      <Header subtitle="Meet The Team" />
       <div className="grid grid-cols-1 gap-16  md:grid-cols-2 lg:grid-cols-3 mt-8 md:mt-[3.31rem]">
         {teamData.map((team) => (
           <TeamCard
