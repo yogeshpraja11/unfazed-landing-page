@@ -12,10 +12,10 @@ function ServiceSection() {
             <div className="flex-[0.5] w-full flex justify-center">
               <img src="/images/mental-health-therapy.jpg" alt="service icon" />
             </div>
-            <p className="flex-[0.5] text-normal w-full">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              dui mi, bibendum eu erat id, ultricies semper metus. Nunc dapibus
-              laoreet dolor nec imperdiet.
+            <p className="flex-[0.5] mt-8 text-normal w-full">
+              With a proven history of assisting over <strong>1,000</strong>
+              clients, we take pride in delivering outstanding services and
+              tailored solutions that cater to various needs and expectations.
             </p>
           </div>
         </div>
@@ -97,10 +97,10 @@ function ServiceSection() {
               ></path>
             </svg>
           </div>
-          <p className="text-normal">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui
-            mi, bibendum eu erat id, ultricies semper metus. Nunc dapibus
-            laoreet dolor nec imperdiet.
+          <p className="flex-[0.6] mt-6 text-normal w-full">
+            With a vibrant community of over <strong>200,000</strong> members,
+            this platform unites individuals from diverse backgrounds, fostering
+            connections, education, and effective teamwork.
           </p>
         </div>
 
@@ -115,9 +115,10 @@ function ServiceSection() {
               />
             </div>
             <p className="flex-[0.6] text-normal w-full">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              dui mi, bibendum eu erat id, ultricies semper metus. Nunc dapibus
-              laoreet dolor nec imperdiet.
+              We are proud to have served over <strong>3,000</strong> clients
+              and trained more than <strong>100</strong> interns, equipping them
+              with essential skills to thrive in their careers and contribute to
+              our community.
             </p>
           </div>
         </div>

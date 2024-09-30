@@ -67,13 +67,17 @@ function HeroSection() {
     <section className="flex justify-between flex-col md:flex-row gap-4 items-center">
       <div>
         <p className="font-[700] md:leading-[5.0625rem] text-2xl md:text-[3.375rem] text-darkBlue">
-          Your Path to Mental Wellness Starts Here!
+          India's Fastest Growing Mental Health Creator
         </p>
         <p className="text-[1.375rem] font-[500]">
-          Explore customised therapy services to guide you through life's
-          challenges and enhance your mental health.
+          Presents to you, an opportunity like never before!
         </p>
-        <div className="flex gap-[1.75rem] items-center mt-[3rem]">
+        <p className="text-[1rem] font-[500]">
+          Internship for Psychologists, that actually helps you become a better
+          professional!
+        </p>
+        <p className="text-[1rem] font-[500]">Online Training with Unfazed</p>
+        <div className="flex gap-[1.75rem] items-center mt-[2rem]">
           <Dialog>
             <DialogTrigger asChild>
               {/* <MainButton
@@ -84,7 +88,7 @@ function HeroSection() {
                 Enroll Now
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-full max-w-[800px] h-[80vh] sm:max-w-[800px]">
+            <DialogContent className="w-full max-w-[800px] h-[90vh] sm:max-w-[800px]">
               <DialogHeader>
                 <DialogTitle>Enroll</DialogTitle>
                 <DialogDescription>
@@ -207,9 +211,7 @@ function HeroSection() {
                       />
                     </div>
                   </div>
-                  <div>
-                    
-                  </div>
+                  <div></div>
 
                   <DialogFooter>
                     {/* <Button type="submit">Submit</Button> */}
@@ -259,32 +261,30 @@ function HeroSection() {
                 </div>
               </div> */}
               <DialogFooter>
-                <MainButton text="Save" classes="shadow-none w-[8.125rem]" />
+                <MainButton text="Submit" classes="shadow-none w-[8.125rem]" />
               </DialogFooter>
             </DialogContent>
           </Dialog>
           <div className="flex gap-[1.56rem] items-center">
             <Dialog>
               <DialogTrigger asChild>
-                <button>
+                <button className="flex gap-[0.5rem]  items-center">
                   <img src="/images/fancy_play_icon.png" alt="play icon" />
+                  <p className="font-bold text-normal">Learn More</p>
                 </button>
               </DialogTrigger>
 
               <DialogContent className="w-full h-[90vh] bg-transparent sm:max-w-[800px] p-0 border-none">
                 <DialogClose className="absolute right-4 top-4 rounded-sm bg-gray-500 text-white hover:bg-gray-600 p-2 transition-opacity opacity-70 hover:opacity-100"></DialogClose>
                 <video
-                  className="w-full h-full object-cover"
-                  loop
-                  muted
+                  className="w-full h-[100%] object-cover"
                   autoPlay
+                  controls
                 >
                   <source src="/video.mp4" />
                 </video>
               </DialogContent>
             </Dialog>
-
-            <p className="font-bold text-normal">Learn More</p>
           </div>
         </div>
       </div>
