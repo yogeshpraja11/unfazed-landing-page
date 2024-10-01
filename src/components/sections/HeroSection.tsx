@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {
   Dialog,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {format} from "date-fns";
-import {CalendarIcon} from "lucide-react";
+import {CalendarIcon, PhoneCall} from "lucide-react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {cn} from "@/lib/utils";
@@ -37,9 +37,12 @@ const FormSchema = z.object({
   dob: z.date({
     required_error: "A date of birth is required.",
   }),
-  username: z
+  firstName: z
     .string()
-    .min(2, {message: "Username must be at least 2 characters."}),
+    .min(2, {message: "Firstname must be at least 2 characters."}),
+  lastName: z
+    .string()
+    .min(2, {message: "Lastname must be at least 2 characters."}),
   email: z.string().email({message: "Invalid email address."}),
   phoneNumber: z
     .string()
@@ -51,6 +54,86 @@ function HeroSection() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+  const [showType, setShowType] = useState("formd");
+
+  interface RazorpayResponse {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+  }
+
+  interface PaymentResult {
+    success: boolean;
+  }
+
+  const handlePayment = async () => {
+    try {
+      // Make API call to create a Razorpay order
+      const formData = new FormData();
+      formData.append("amount", "50000"); // Amount in paise (₹500 = 50000 paise)
+      formData.append("currency", "INR");
+      formData.append("contact_id", "1"); // Replace with the actual contact_id
+
+      // Make API call to create a Razorpay order using FormData
+      const response = await fetch(
+        "https://landing.unfazed.co.in/api/create-payment",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data) {
+        console.error("Failed to create order");
+        return;
+      }
+
+      // Razorpay options
+      const options: any = {
+        key: "rzp_test_7GPcqJ45CdVJHP", // Add Razorpay Key ID
+        amount: data.amount, // Amount in paise
+        currency: data.currency,
+        name: "Your Company Name",
+        description: "Test Transaction",
+        order_id: data.id, // Razorpay order ID returned from backend
+        handler: async (response: RazorpayResponse) => {
+          // On successful payment, save payment details in the backend
+          const paymentResponse = await fetch("/api/save-payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
+
+          const paymentResult: PaymentResult = await paymentResponse.json();
+          if (paymentResult.success) {
+            alert(
+              `Payment Successful! Payment ID: ${response.razorpay_payment_id}`
+            );
+          } else {
+            alert("Payment Failed");
+          }
+        },
+        prefill: {
+          name: "John Doe", // Replace with actual customer name
+          email: "john.doe@example.com", // Replace with actual customer email
+          contact: "9999999999", // Replace with actual customer contact
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+    } catch (error) {
+      console.error("Error in processing payment:", error);
+    }
+  };
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // toast({
@@ -91,177 +174,194 @@ function HeroSection() {
             <DialogContent className="w-full max-w-[800px] h-[90vh] sm:max-w-[800px]">
               <DialogHeader>
                 <DialogTitle>Enroll</DialogTitle>
-                <DialogDescription>
+                {/* <DialogDescription>
                   Make changes to your profile here. Click save when you're
                   done.
-                </DialogDescription>
+                </DialogDescription> */}
               </DialogHeader>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8"
-                >
-                  <div className="grid gap-4 py-4 grid-cols-2">
-                    <div>
-                      <FormField
-                        control={form.control}
-                        name="username"
-                        render={({field}) => (
-                          <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="Enter your username"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div>
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({field}) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                type="email"
-                                placeholder="Enter your email"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-                  <div className="grid gap-4 py-4 grid-cols-2">
-                    <div>
-                      <FormField
-                        control={form.control}
-                        name="phoneNumber"
-                        render={({field}) => (
-                          <FormItem>
-                            <FormLabel>Phone Number</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                type="tel"
-                                placeholder="Enter your phone number"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div>
-                      <FormField
-                        control={form.control}
-                        name="dob"
-                        render={({field}) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel className="mb-2">
-                              Date of birth
-                            </FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                      "w-full pl-3 text-left font-normal",
-                                      !field.value && "text-muted-foreground"
-                                    )}
-                                  >
-                                    {field.value ? (
-                                      format(field.value, "PPP")
-                                    ) : (
-                                      <span>Pick a date</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent
-                                className="w-auto p-0"
-                                align="start"
-                              >
-                                <Calendar
-                                  mode="single"
-                                  selected={field.value}
-                                  onSelect={field.onChange}
-                                  disabled={(date) =>
-                                    date > new Date() ||
-                                    date < new Date("1900-01-01")
-                                  }
-                                  initialFocus
+              {showType === "form" ? (
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-8"
+                  >
+                    <div className="grid gap-4 py-4 grid-cols-2">
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="firstName"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel>First Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  placeholder="Enter your first name"
                                 />
-                              </PopoverContent>
-                            </Popover>
-
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="lastName"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel>Last Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  placeholder="Enter your last name"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
+                    <div className="grid gap-4 py-4 grid-cols-2">
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="email"
+                                  placeholder="Enter your email"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="phoneNumber"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel>Phone Number</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="tel"
+                                  placeholder="Enter your phone number"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid gap-4 py-4 grid-cols-2">
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="dob"
+                          render={({field}) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel className="mb-2">
+                                Date of birth
+                              </FormLabel>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <Button
+                                      variant={"outline"}
+                                      className={cn(
+                                        "w-full pl-3 text-left font-normal",
+                                        !field.value && "text-muted-foreground"
+                                      )}
+                                    >
+                                      {field.value ? (
+                                        format(field.value, "PPP")
+                                      ) : (
+                                        <span>Pick a date</span>
+                                      )}
+                                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                  </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                  className="w-auto p-0"
+                                  align="start"
+                                >
+                                  <Calendar
+                                    mode="single"
+                                    selected={field.value}
+                                    onSelect={field.onChange}
+                                    disabled={(date) =>
+                                      date > new Date() ||
+                                      date < new Date("1900-01-01")
+                                    }
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div></div>
+                  </form>
+                </Form>
+              ) : (
+                <>
+                  <div className="flex flex-col items-center justify-center p-8 mt-6 bg-white rounded-lg shadow-lg max-w-sm mx-auto">
+                    <img
+                      src="/images/enrollment.png"
+                      alt="Planeeet Logo"
+                      className="w-16 h-16 mb-4"
+                    />
+
+                    <h1 className="text-xl font-semibold">Registered</h1>
+                    <p className="text-gray-500 mt-2 flex">
+                      Our team will contact u soon...{" "}
+                      <PhoneCall color="#ff6600" />
+                    </p>
+
+                    <h2 className="text-2xl font-bold mt-6">
+                      Enroll now, Book Your Slot!
+                    </h2>
+                    <p className="text-center text-gray-500 mt-2">
+                      This feature is available for paid users only. Please, pay
+                      now or book your seat to get full access to all our
+                      course. Don’t miss out!
+                    </p>
+
+                    {/* <button
+                      onClick={handlePayment}
+                      className="mt-6 bg-gradient-to-r from-red-400 to-red-500 hover:bg-primary text-white py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-200"
+                    ></button> */}
+                    <Button
+                      onClick={handlePayment}
+                      className="mt-6  bg-primary hover:opacity-90  hover:bg-secondary text-white py-2 px-6 rounded-full shadow-none"
+                    >
+                      PAY NOW
+                    </Button>
                   </div>
-                  <div></div>
-
-                  <DialogFooter>
-                    {/* <Button type="submit">Submit</Button> */}
-                  </DialogFooter>
-                </form>
-              </Form>
-
-              {/* <div className="grid gap-4 py-4 grid-cols-2">
-                <div>
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    defaultValue="Pedro Duarte"
-                    className="col-span-3"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="username" className="text-right">
-                    Username
-                  </Label>
-                  <Input
-                    id="username"
-                    defaultValue="@peduarte"
-                    className="col-span-3"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 py-4 grid-cols-2">
-                <div>
-                  <Label htmlFor="name" className="text-right">
-                    Email
-                  </Label>
-                  <Input
-                    id="name"
-                    type="email"
-                    placeholder="harsh@gmail.com"
-                    className="col-span-3"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="phone" className="text-right">
-                    Phone Number
-                  </Label>
-                  <Input id="phone" type="tel" className="col-span-3" />
-                </div>
-              </div> */}
+                </>
+              )}
               <DialogFooter>
-                <MainButton text="Submit" classes="shadow-none w-[8.125rem]" />
+                {showType === "form" && (
+                  <MainButton
+                    text="Submit"
+                    classes="shadow-none w-[8.125rem]"
+                  />
+                )}
               </DialogFooter>
             </DialogContent>
           </Dialog>
