@@ -172,11 +172,6 @@ function HeroSection() {
   };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      variant: "destructive",
-      title: "Uh oh! Something went wrong.",
-      description: "There was a problem with your request.",
-    });
     try {
       const formData = new FormData();
 
@@ -336,6 +331,7 @@ function HeroSection() {
                               </FormLabel>
                               <DateTimePicker
                                 granularity="day"
+                                displayFormat={{hour24: "MMMM  dd, yyyy"}}
                                 value={field.value}
                                 onChange={field.onChange}
                                 placeholder="What's your birthday?"
