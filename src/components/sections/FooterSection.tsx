@@ -1,5 +1,6 @@
 import React from "react";
 import {Separator} from "../ui/separator";
+import Link from "next/link";
 
 function FooterSection() {
   return (
@@ -16,11 +17,13 @@ function FooterSection() {
           © 2024 Unfazed. All rights reserved.
         </div>
         <div className="flex gap-4">
-          <p className="text-lightBlue text-[1rem]">Portfolio</p>
-          <p className="text-lightBlue text-[1rem]">How it Works</p>
-          <p className="text-lightBlue text-[1rem]">Pricing</p>
+          <Link href="/privacy-policy">
+            <p className="text-lightBlue text-[1rem]">Privacy Policy</p>
+          </Link>
+          <Link href="/refund-policy">
+            <p className="text-lightBlue text-[1rem]">Refund Policy</p>
+          </Link>
           <p className="text-lightBlue text-[1rem]">About</p>
-          <p className="text-lightBlue text-[1rem]">Login</p>
         </div>
       </div>
       <Separator />

@@ -2,6 +2,8 @@ import type {Metadata} from "next";
 import "./globals.css";
 import {Nunito} from "next/font/google";
 import localFont from "next/font/local";
+import {Toaster} from "@/components/ui/toaster";
+import NavBar from "@/components/common/NavBar";
 
 export const metadata: Metadata = {
   title: "Unfazed",
@@ -42,7 +44,11 @@ const nunito = Nunito({
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body className={nunito.className}>{children}</body>
+      <body className={nunito.className}>
+      <NavBar />
+        <main>{children}</main>
+        <Toaster />
+      </body>
     </html>
   );
 }

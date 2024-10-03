@@ -17,6 +17,7 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {cn} from "@/lib/utils";
 import {Calendar} from "@/components/ui/calendar";
+
 import {
   Form,
   FormControl,
@@ -32,6 +33,9 @@ import {Label} from "@/components/ui/label";
 
 import MainButton from "../common/MainButton";
 import {DialogClose} from "@radix-ui/react-dialog";
+import {Textarea} from "../ui/textarea";
+import {useToast} from "@/hooks/use-toast";
+import {DateTimePicker} from "../ui/datetime-picker";
 
 const FormSchema = z.object({
   dob: z.date({
@@ -43,6 +47,9 @@ const FormSchema = z.object({
   lastName: z
     .string()
     .min(2, {message: "Lastname must be at least 2 characters."}),
+  message: z
+    .string()
+    .min(2, {message: "Message must be at least 2 characters."}),
   email: z.string().email({message: "Invalid email address."}),
   phoneNumber: z
     .string()
@@ -54,7 +61,8 @@ function HeroSection() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-  const [showType, setShowType] = useState("formd");
+  const [showType, setShowType] = useState("form");
+  const {toast} = useToast();
 
   interface RazorpayResponse {
     razorpay_payment_id: string;
@@ -65,18 +73,32 @@ function HeroSection() {
   interface PaymentResult {
     success: boolean;
   }
+  const loadScript = (src: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+
+      document.body.appendChild(script);
+    });
+  };
 
   const handlePayment = async () => {
     try {
       // Make API call to create a Razorpay order
       const formData = new FormData();
-      formData.append("amount", "50000"); // Amount in paise (₹500 = 50000 paise)
+      formData.append("amount", "50000");
       formData.append("currency", "INR");
-      formData.append("contact_id", "1"); // Replace with the actual contact_id
+      formData.append("contact_id", "3");
 
-      // Make API call to create a Razorpay order using FormData
       const response = await fetch(
-        "https://landing.unfazed.co.in/api/create-payment",
+        "https://landing.unfazed.co.in/api/create-payment/",
         {
           method: "POST",
           body: formData,
@@ -90,12 +112,21 @@ function HeroSection() {
         return;
       }
 
+      const res = await loadScript(
+        "https:/checkout.razorpay.com/v1/checkout.js"
+      );
+
+      if (!res) {
+        alert("Some error at razorpay screen loading");
+        return;
+      }
+
       // Razorpay options
       const options: any = {
         key: "rzp_test_7GPcqJ45CdVJHP", // Add Razorpay Key ID
         amount: data.amount, // Amount in paise
         currency: data.currency,
-        name: "Your Company Name",
+        name: "Unfazed",
         description: "Test Transaction",
         order_id: data.id, // Razorpay order ID returned from backend
         handler: async (response: RazorpayResponse) => {
@@ -130,20 +161,53 @@ function HeroSection() {
           color: "#3399cc",
         },
       };
+
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
+      // const paymentObject = new window.Razorpay(options);
+      // paymentObject.open();
     } catch (error) {
       console.error("Error in processing payment:", error);
     }
   };
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // })
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "There was a problem with your request.",
+    });
+    try {
+      const formData = new FormData();
+
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, value as any);
+        }
+      });
+
+      const response = await fetch(
+        "http://landing.unfazed.co.in/api/contact/",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+      console.log("Form submitted successfully:", result);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
+      console.error("Error submitting form:", error);
+    }
   }
 
   return (
@@ -171,7 +235,7 @@ function HeroSection() {
                 Enroll Now
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-full max-w-[800px] h-[90vh] sm:max-w-[800px]">
+            <DialogContent className="w-full max-w-[800px] sm:max-w-[800px]">
               <DialogHeader>
                 <DialogTitle>Enroll</DialogTitle>
                 {/* <DialogDescription>
@@ -181,10 +245,7 @@ function HeroSection() {
               </DialogHeader>
               {showType === "form" ? (
                 <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
-                  >
+                  <form id="myForm" onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="grid gap-4 py-4 grid-cols-2">
                       <div>
                         <FormField
@@ -270,10 +331,16 @@ function HeroSection() {
                           name="dob"
                           render={({field}) => (
                             <FormItem className="flex flex-col">
-                              <FormLabel className="mb-2">
-                                Date of birth
+                              <FormLabel className="mb-2 mt-1">
+                                Date of Birth
                               </FormLabel>
-                              <Popover>
+                              <DateTimePicker
+                                granularity="day"
+                                value={field.value}
+                                onChange={field.onChange}
+                                placeholder="What's your birthday?"
+                              />
+                              {/* <Popover>
                                 <PopoverTrigger asChild>
                                   <FormControl>
                                     <Button
@@ -298,6 +365,15 @@ function HeroSection() {
                                 >
                                   <Calendar
                                     mode="single"
+                                    captionLayout="dropdown-buttons"
+                                    selected={field.value}
+                                    onSelect={field.onChange}
+                                    fromYear={1960}
+                                    toYear={2010}
+                                  />
+
+                                  <Calendar
+                                    mode="single"
                                     selected={field.value}
                                     onSelect={field.onChange}
                                     disabled={(date) =>
@@ -307,8 +383,27 @@ function HeroSection() {
                                     initialFocus
                                   />
                                 </PopoverContent>
-                              </Popover>
-
+                              </Popover> */}
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="message"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel>Message</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  {...field}
+                                  placeholder="Enter your message"
+                                  className="w-full"
+                                  rows={4}
+                                />
+                              </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -320,35 +415,33 @@ function HeroSection() {
                 </Form>
               ) : (
                 <>
-                  <div className="flex flex-col items-center justify-center p-8 mt-6 bg-white rounded-lg shadow-lg max-w-sm mx-auto">
+                  <div className="flex flex-col items-center justify-center p-8 mt-6 bg-white rounded-lg shadow-lg max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto">
                     <img
                       src="/images/enrollment.png"
                       alt="Planeeet Logo"
                       className="w-16 h-16 mb-4"
                     />
 
-                    <h1 className="text-xl font-semibold">Registered</h1>
-                    <p className="text-gray-500 mt-2 flex">
-                      Our team will contact u soon...{" "}
-                      <PhoneCall color="#ff6600" />
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold">
+                      Registered
+                    </h1>
+                    <p className="text-gray-500 mt-2 flex text-center">
+                      Our team will contact you soon...
+                      <PhoneCall color="#ff6600" className="ml-1" />
                     </p>
 
-                    <h2 className="text-2xl font-bold mt-6">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-6">
                       Enroll now, Book Your Slot!
                     </h2>
-                    <p className="text-center text-gray-500 mt-2">
+                    <p className="text-center text-gray-500 mt-2 text-sm sm:text-base lg:text-lg">
                       This feature is available for paid users only. Please, pay
                       now or book your seat to get full access to all our
                       course. Don’t miss out!
                     </p>
 
-                    {/* <button
-                      onClick={handlePayment}
-                      className="mt-6 bg-gradient-to-r from-red-400 to-red-500 hover:bg-primary text-white py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-200"
-                    ></button> */}
                     <Button
                       onClick={handlePayment}
-                      className="mt-6  bg-primary hover:opacity-90  hover:bg-secondary text-white py-2 px-6 rounded-full shadow-none"
+                      className="mt-6 bg-primary hover:opacity-90 hover:bg-secondary text-white py-2 px-6 rounded-full shadow-none text-sm sm:text-base lg:text-lg"
                     >
                       PAY NOW
                     </Button>
@@ -357,10 +450,13 @@ function HeroSection() {
               )}
               <DialogFooter>
                 {showType === "form" && (
-                  <MainButton
-                    text="Submit"
-                    classes="shadow-none w-[8.125rem]"
-                  />
+                  <Button
+                    type="submit"
+                    form="myForm"
+                    className="bg-primary w-[8.125rem] hover:opacity-90  hover:bg-secondary text-white shadow-none"
+                  >
+                    Enroll Now
+                  </Button>
                 )}
               </DialogFooter>
             </DialogContent>
