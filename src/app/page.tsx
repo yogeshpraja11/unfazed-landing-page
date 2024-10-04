@@ -16,11 +16,11 @@ export default function Home() {
         <div id="about-section">
           <ServiceSection />
         </div>
+        <VideoPlayerSection />
+        <TestimonialSection />
         <div id="qa-section">
           <FAQSection />
         </div>
-        <VideoPlayerSection />
-        <TestimonialSection />
         <NewsletterSection />
         <FooterSection />
       </div>

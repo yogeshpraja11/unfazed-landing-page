@@ -36,6 +36,7 @@ import {DialogClose} from "@radix-ui/react-dialog";
 import {Textarea} from "../ui/textarea";
 import {useToast} from "@/hooks/use-toast";
 import {DateTimePicker} from "../ui/datetime-picker";
+import {useRouter} from "next/navigation";
 
 const FormSchema = z.object({
   dob: z.date({
@@ -62,7 +63,9 @@ function HeroSection() {
     resolver: zodResolver(FormSchema),
   });
   const [showType, setShowType] = useState("form");
+  const [userDetails, setUserDetails] = useState({contact_id: ""});
   const {toast} = useToast();
+  const router = useRouter();
 
   interface RazorpayResponse {
     razorpay_payment_id: string;
@@ -95,7 +98,7 @@ function HeroSection() {
       const formData = new FormData();
       formData.append("amount", "50000");
       formData.append("currency", "INR");
-      formData.append("contact_id", "3");
+      formData.append("contact_id", userDetails?.contact_id);
 
       const response = await fetch(
         "https://landing.unfazed.co.in/api/create-payment/",
@@ -106,7 +109,6 @@ function HeroSection() {
       );
 
       const data = await response.json();
-
       if (!data) {
         console.error("Failed to create order");
         return;
@@ -145,9 +147,10 @@ function HeroSection() {
 
           const paymentResult: PaymentResult = await paymentResponse.json();
           if (paymentResult.success) {
-            alert(
-              `Payment Successful! Payment ID: ${response.razorpay_payment_id}`
-            );
+            // alert(
+            //   `Payment Successful! Payment ID: ${response.razorpay_payment_id}`
+            // );
+            router.push("/register-success");
           } else {
             alert("Payment Failed");
           }
@@ -162,10 +165,10 @@ function HeroSection() {
         },
       };
 
-      const rzp1 = new Razorpay(options);
+      // const rzp1 = new Razorpay(options);
+      // rzp1.open();
+      const rzp1 = new (window as any).Razorpay(options);
       rzp1.open();
-      // const paymentObject = new window.Razorpay(options);
-      // paymentObject.open();
     } catch (error) {
       console.error("Error in processing payment:", error);
     }
@@ -194,6 +197,8 @@ function HeroSection() {
       }
 
       const result = await response.json();
+      setUserDetails(result);
+
       console.log("Form submitted successfully:", result);
     } catch (error) {
       toast({

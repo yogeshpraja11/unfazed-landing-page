@@ -23,7 +23,9 @@ function FooterSection() {
           <Link href="/refund-policy">
             <p className="text-lightBlue text-[1rem]">Refund Policy</p>
           </Link>
-          <p className="text-lightBlue text-[1rem]">About</p>
+          <Link href="/terms-and-conditions">
+            <p className="text-lightBlue text-[1rem]">Terms & Conditions</p>
+          </Link>
         </div>
       </div>
       <Separator />
