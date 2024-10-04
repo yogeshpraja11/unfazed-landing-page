@@ -335,11 +335,16 @@ function HeroSection() {
                               </FormLabel>
                               <DateTimePicker
                                 granularity="day"
-                                displayFormat={{hour24: "MMMM  dd, yyyy"}}
+                                displayFormat={{hour24: "MMMM dd, yyyy"}}
                                 value={field.value}
                                 onChange={field.onChange}
                                 placeholder="What's your birthday?"
+                                locale="en-US"
+                                weekStartsOn={1}
+                                showWeekNumber={false}
+                                showOutsideDays={false}
                               />
+
                               {/* <Popover>
                                 <PopoverTrigger asChild>
                                   <FormControl>
