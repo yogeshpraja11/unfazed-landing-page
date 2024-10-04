@@ -16,6 +16,7 @@ import {CalendarIcon, PhoneCall} from "lucide-react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {cn} from "@/lib/utils";
+import {enUS} from "date-fns/locale"; // Adjust import based on your library
 
 import {
   Form,
@@ -339,7 +340,7 @@ function HeroSection() {
                                 value={field.value}
                                 onChange={field.onChange}
                                 placeholder="What's your birthday?"
-                                locale="en-US"
+                                locale={enUS}
                                 weekStartsOn={1}
                                 showWeekNumber={false}
                                 showOutsideDays={false}
