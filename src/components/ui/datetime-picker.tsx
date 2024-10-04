@@ -1,5 +1,4 @@
 import {Button, buttonVariants} from "@/components/ui/button";
-import type {CalendarProps} from "@/components/ui/calendar";
 import {Input} from "@/components/ui/input";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
@@ -27,6 +26,8 @@ import {DayPicker} from "react-day-picker";
 /**
  * regular expression to check for valid hour format (01-23)
  */
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+
 function isValidHour(value: string) {
   return /^(0[0-9]|1[0-9]|2[0-3])$/.test(value);
 }
