@@ -63,7 +63,15 @@ function HeroSection() {
     resolver: zodResolver(FormSchema),
   });
   const [showType, setShowType] = useState("form");
-  const [userDetails, setUserDetails] = useState({contact_id: ""});
+  const [userDetails, setUserDetails] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    dob: "",
+    phoneNumber: "",
+  });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const {toast} = useToast();
   const router = useRouter();
 
@@ -93,13 +101,15 @@ function HeroSection() {
   };
 
   const handlePayment = async () => {
+    setIsDialogOpen(false);
     try {
-      // Make API call to create a Razorpay order
+      // Prepare form data for API call
       const formData = new FormData();
-      formData.append("amount", "50000");
+      formData.append("amount", "50000"); // Amount in paise (50000 = ₹500)
       formData.append("currency", "INR");
-      formData.append("contact_id", userDetails?.contact_id);
+      formData.append("contact_id", userDetails?.id);
 
+      // Create Razorpay order by calling your API
       const response = await fetch(
         "https://landing.unfazed.co.in/api/create-payment/",
         {
@@ -114,63 +124,61 @@ function HeroSection() {
         return;
       }
 
+      // Load the Razorpay script
       const res = await loadScript(
-        "https:/checkout.razorpay.com/v1/checkout.js"
+        "https://checkout.razorpay.com/v1/checkout.js"
       );
 
       if (!res) {
-        alert("Some error at razorpay screen loading");
+        alert("Failed to load Razorpay checkout script.");
         return;
       }
 
-      // Razorpay options
+      // Razorpay payment options
       const options: any = {
-        key: "rzp_test_7GPcqJ45CdVJHP", // Add Razorpay Key ID
+        key: "rzp_test_7GPcqJ45CdVJHP", // Replace with your Razorpay key
         amount: data.amount, // Amount in paise
         currency: data.currency,
         name: "Unfazed",
         description: "Test Transaction",
         order_id: data.id, // Razorpay order ID returned from backend
-        handler: async (response: RazorpayResponse) => {
-          // On successful payment, save payment details in the backend
-          const paymentResponse = await fetch("/api/save-payment", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature,
-            }),
-          });
-
-          const paymentResult: PaymentResult = await paymentResponse.json();
-          if (paymentResult.success) {
-            // alert(
-            //   `Payment Successful! Payment ID: ${response.razorpay_payment_id}`
-            // );
+        handler: (response: RazorpayResponse) => {
+          // This function triggers on payment success
+          if (response.razorpay_payment_id) {
+            // If payment was successful
+            alert(
+              `Payment Successful! Payment ID: ${response.razorpay_payment_id}`
+            );
             router.push("/register-success");
           } else {
-            alert("Payment Failed");
+            // If payment failed
+            alert("Payment failed. Please try again.");
           }
         },
         prefill: {
-          name: "John Doe", // Replace with actual customer name
-          email: "john.doe@example.com", // Replace with actual customer email
-          contact: "9999999999", // Replace with actual customer contact
+          name: `${userDetails?.firstName || "John"} ${
+            userDetails?.lastName || "Doe"
+          }`,
+          email: userDetails?.email || "john.doe@example.com",
+          contact: userDetails?.phone || "9999999999",
         },
         theme: {
           color: "#3399cc",
         },
       };
 
-      // const rzp1 = new Razorpay(options);
-      // rzp1.open();
+      // Open Razorpay payment window
       const rzp1 = new (window as any).Razorpay(options);
       rzp1.open();
     } catch (error) {
       console.error("Error in processing payment:", error);
+
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description:
+          "An error occurred while processing the payment. Please try again.",
+      });
     }
   };
 
@@ -180,7 +188,19 @@ function HeroSection() {
 
       Object.entries(data).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-          formData.append(key, value as any);
+          // Check if the value is a Date object or a valid date string
+          if (key === "dob" && value instanceof Date) {
+            // Format the date as dd/mm/yyyy
+            const formattedDOB = `${value
+              .getDate()
+              .toString()
+              .padStart(2, "0")}/${(value.getMonth() + 1)
+              .toString()
+              .padStart(2, "0")}/${value.getFullYear()}`;
+            formData.append(key, formattedDOB);
+          } else {
+            formData.append(key, value as any);
+          }
         }
       });
 
@@ -198,6 +218,7 @@ function HeroSection() {
 
       const result = await response.json();
       setUserDetails(result);
+      setShowType("pay");
 
       console.log("Form submitted successfully:", result);
     } catch (error) {
@@ -225,13 +246,16 @@ function HeroSection() {
         </p>
         <p className="text-[1rem] font-[500]">Online Training with Unfazed</p>
         <div className="flex gap-[1.75rem] items-center mt-[2rem]">
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               {/* <MainButton
                 text="Enroll Now"
                 classes="shadow-none w-[10.125rem]"
               /> */}
-              <Button className=" bg-primary hover:opacity-90  hover:bg-secondary text-white shadow-none w-[10.125rem]">
+              <Button
+                onClick={() => setIsDialogOpen(true)}
+                className=" bg-primary hover:opacity-90  hover:bg-secondary text-white shadow-none w-[10.125rem]"
+              >
                 Enroll Now
               </Button>
             </DialogTrigger>
