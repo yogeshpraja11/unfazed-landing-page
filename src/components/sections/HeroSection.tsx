@@ -160,7 +160,7 @@ function HeroSection() {
             userDetails?.lastName || "Doe"
           }`,
           email: userDetails?.email || "john.doe@example.com",
-          contact: userDetails?.phone || "9999999999",
+          contact: userDetails?.phoneNumber || "9999999999",
         },
         theme: {
           color: "#3399cc",
