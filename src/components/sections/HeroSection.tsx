@@ -146,9 +146,6 @@ function HeroSection() {
           // This function triggers on payment success
           if (response.razorpay_payment_id) {
             // If payment was successful
-            alert(
-              `Payment Successful! Payment ID: ${response.razorpay_payment_id}`
-            );
             router.push("/register-success");
           } else {
             // If payment failed
