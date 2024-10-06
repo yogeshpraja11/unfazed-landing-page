@@ -205,7 +205,7 @@ function HeroSection() {
       });
 
       const response = await fetch(
-        "http://landing.unfazed.co.in/api/contact/",
+        "https://landing.unfazed.co.in/api/contact/",
         {
           method: "POST",
           body: formData,
