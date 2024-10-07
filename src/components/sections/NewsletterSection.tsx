@@ -16,18 +16,22 @@ function NewsletterSection() {
           />
         </div>
         <div>
-          <p className="mb-[1.44rem] text-normal font-semibold">
+          <p className="mb-[1.44rem] text-normal  font-semibold">
             Sign up now to receive the latest news and exclusive offers on a
             wide range of online courses and learning opportunities designed to
             help you grow professionally and personally.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-4">
             <Input
               type="email"
               placeholder="Your E-mail here..."
-              className="h-[2.8125rem] rounded-[2.0625rem] newsletter-box-shadow w-[70%]"
+              className="h-[2.8125rem] rounded-[2.0625rem] newsletter-box-shadow w-[70%] sm:w-[100%]"
             />
-            <MainButton text="Subscribe Our Newsletter" width="w-[30%]" />
+            <MainButton
+              text="Subscribe Our Newsletter"
+              width="w-[12rem]"
+              // className="sm:w-[12rem] w-full sm:mx-0 mx-auto"
+            />
           </div>
 
           {/* <div className="mt-[3.12rem]">

@@ -146,7 +146,7 @@ function VideoPlayerSection() {
               Explore
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-full max-w-[800px] min-h-[90vh] sm:max-w-[800px] overflow-y-scroll max-h-screen ">
+          <DialogContent className="fixed left-[50%] top-[60%] w-full max-w-[800px] min-h-[90vh] sm:max-w-[800px] overflow-y-scroll max-h-screen ">
             <DialogHeader>
               <DialogTitle>More About Course</DialogTitle>
             </DialogHeader>
@@ -273,7 +273,7 @@ function VideoPlayerSection() {
           />
         </div>
         <video className="w-[60rem]" ref={videoRef}>
-          <source src="/video.mp4" />
+          <source src="/video.mp4" type="video/mp4" />
         </video>
       </div>
     </section>

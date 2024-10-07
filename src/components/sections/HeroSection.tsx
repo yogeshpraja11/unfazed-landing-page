@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {
   Dialog,
@@ -72,6 +72,7 @@ function HeroSection() {
     phoneNumber: "",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const {toast} = useToast();
   const router = useRouter();
 
@@ -84,6 +85,19 @@ function HeroSection() {
   interface PaymentResult {
     success: boolean;
   }
+
+  // Prevent body scroll when dialog is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const loadScript = (src: string): Promise<boolean> => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -149,7 +163,12 @@ function HeroSection() {
             router.push("/register-success");
           } else {
             // If payment failed
-            alert("Payment failed. Please try again.");
+            toast({
+              variant: "destructive",
+              title: "Uh oh! Something went wrong.",
+              description: "Payment failed. Please try again.",
+            });
+            // alert("Payment failed. Please try again.");
           }
         },
         prefill: {
@@ -360,7 +379,7 @@ function HeroSection() {
                                 displayFormat={{hour24: "MMMM dd, yyyy"}}
                                 value={field.value}
                                 onChange={field.onChange}
-                                placeholder="What's your birthday?"
+                                placeholder="What's ur birthday?"
                                 locale={enUS}
                                 weekStartsOn={1}
                                 showWeekNumber={false}
@@ -489,23 +508,32 @@ function HeroSection() {
             </DialogContent>
           </Dialog>
           <div className="flex gap-[1.56rem] items-center">
-            <Dialog>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <button className="flex gap-[0.5rem]  items-center">
+                <button className="flex gap-2 items-center hover:opacity-90 transition-opacity">
                   <img src="/images/fancy_play_icon.png" alt="play icon" />
-                  <p className="font-bold text-normal">Learn More</p>
+                  <span className="font-bold text-base">Learn More</span>
                 </button>
               </DialogTrigger>
 
-              <DialogContent className="w-full h-[90vh] bg-transparent sm:max-w-[800px] p-0 border-none">
+              <DialogContent
+                className="w-[95vw] h-[90vh] bg-black/95 sm:max-w-[800px] "
+                onInteractOutside={(e) => e.preventDefault()} // Prevent unwanted closes on mobile
+              >
                 <DialogClose className="absolute right-4 top-4 rounded-sm bg-gray-500 text-white hover:bg-gray-600 p-2 transition-opacity opacity-70 hover:opacity-100"></DialogClose>
-                <video
-                  className="w-full h-[100%] object-cover"
-                  autoPlay
-                  controls
-                >
-                  <source src="/video.mp4" />
-                </video>
+
+                <div className="w-full h-full flex items-center justify-center">
+                  <video
+                    className="w-full h-full object-contain"
+                    controls
+                    playsInline
+                    controlsList="nodownload"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <source src="/video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </DialogContent>
             </Dialog>
           </div>
