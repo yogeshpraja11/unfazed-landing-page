@@ -37,6 +37,8 @@ import {Textarea} from "../ui/textarea";
 import {useToast} from "@/hooks/use-toast";
 import {DateTimePicker} from "../ui/datetime-picker";
 import {useRouter} from "next/navigation";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const FormSchema = z.object({
   dob: z.date({
@@ -254,25 +256,27 @@ function HeroSection() {
           India's Fastest Growing Mental Health Creator
         </p>
         <p className="text-[1.375rem] font-[500]">
-          Presents to you, an opportunity like never before!
+          Presenting a life-changing guide to help you <br /> reconnect and
+          heal!
         </p>
+
         <p className="text-[1rem] font-[500]">
-          Internship for Psychologists, that actually helps you become a better
-          professional!
+          *Healing from the Functional Freeze State* – your path to resilience
+          and growth.
         </p>
-        <p className="text-[1rem] font-[500]">Online Training with Unfazed</p>
+
         <div className="flex gap-[1.75rem] items-center mt-[2rem]">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               {/* <MainButton
-                text="Enroll Now"
+                text="Book Now"
                 classes="shadow-none w-[10.125rem]"
               /> */}
               <Button
                 onClick={() => setIsDialogOpen(true)}
                 className=" bg-primary hover:opacity-90  hover:bg-secondary text-white shadow-none w-[10.125rem]"
               >
-                Enroll Now
+                Book Now
               </Button>
             </DialogTrigger>
             <DialogContent className="w-full max-w-[800px] sm:max-w-[800px]">
@@ -352,10 +356,16 @@ function HeroSection() {
                             <FormItem>
                               <FormLabel>Phone Number</FormLabel>
                               <FormControl>
-                                <Input
+                                <PhoneInput
                                   {...field}
-                                  type="tel"
+                                  country="us" // Default country (can change to any country code, e.g., "us", "ca", "gb")
                                   placeholder="Enter your phone number"
+                                  value={field.value}
+                                  onChange={field.onChange}
+                                  inputClass="w-full py-2 px-3 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" // Tailwind classes for styling the input
+                                  buttonClass="bg-gray-200 border-r-2 border-gray-300 rounded-l-md" // Style the flag button
+                                  dropdownClass="bg-white border border-gray-300 shadow-lg rounded-md" // Style the dropdown (country selection)
+                                  specialLabel="Phone"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -477,7 +487,7 @@ function HeroSection() {
                     </p>
 
                     <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-6">
-                      Enroll now, Book Your Slot!
+                      Book Now, Book Your Slot!
                     </h2>
                     <p className="text-center text-gray-500 mt-2 text-sm sm:text-base lg:text-lg">
                       This feature is available for paid users only. Please, pay
@@ -501,7 +511,7 @@ function HeroSection() {
                     form="myForm"
                     className="bg-primary w-[8.125rem] hover:opacity-90  hover:bg-secondary text-white shadow-none"
                   >
-                    Enroll Now
+                    Book Now
                   </Button>
                 )}
               </DialogFooter>

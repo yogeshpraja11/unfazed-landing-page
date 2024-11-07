@@ -19,73 +19,100 @@ import MainButton from "../common/MainButton";
 import VideoPlayerControls from "../common/VideoPlayerControls";
 import {Button} from "../ui/button";
 import Image from "next/image";
-import {CalendarDays, Clock, GraduationCap, UserRound} from "lucide-react";
+import {
+  Book,
+  CalendarDays,
+  Clock,
+  GraduationCap,
+  UserRound,
+} from "lucide-react";
 
 function VideoPlayerSection() {
   const coursesData = [
     {
-      title: "How to Become a Better Psychologist with Jasneet Kaur (16 hours)",
+      title: "Chapter 1: Understanding the Functional Freeze State",
       topics: [
-        "Graphology",
-        "Confidence building & communication",
-        "Dream analysis",
-        "Life coaching",
-        "Couples therapy",
-        "Feminine Energies",
-        "Paranormal Psychology",
-        "Relationship coaching",
+        "Introduction to functional freeze",
+        "Freeze, fight, flight, and fawn responses",
+        "Unique characteristics of the freeze state",
       ],
     },
     {
-      title: "Everything About Real World Practice with Agnieszka (16 hours)",
+      title: "Chapter 2: Recognizing the Signs of Being in Freeze Mode",
       topics: [
-        "Graphology",
-        "Confidence building & communication",
-        "Dream analysis",
-        "Life coaching",
-        "Couples therapy",
-        "Feminine Energies",
-        "Paranormal Psychology",
-        "Relationship coaching",
+        "Signs and symptoms of functional freeze",
+        "Numbness, emotional detachment, and feeling stuck",
+        "Self-assessment tools for freeze triggers",
       ],
     },
     {
-      title: "Art Therapy with Ashmita (16 hours)",
+      title:
+        "Chapter 3: The Science Behind Freeze: The Nervous System Connection",
       topics: [
-        "Graphology",
-        "Confidence building & communication",
-        "Dream analysis",
-        "Life coaching",
-        "Couples therapy",
-        "Feminine Energies",
-        "Paranormal Psychology",
-        "Relationship coaching",
+        "Sympathetic and parasympathetic nervous systems",
+        "The role of the nervous system in the freeze response",
+        "Impact of prolonged freeze on mental and physical health",
+        "Importance of balancing the nervous system",
       ],
     },
     {
-      title: "Human Behaviors with Fun Activities with Rincy (16 hours)",
+      title:
+        "Chapter 4: Reconnecting with Your Body: Somatic Techniques for Release",
       topics: [
-        "Graphology",
-        "Confidence building & communication",
-        "Dream analysis",
-        "Life coaching",
-        "Couples therapy",
-        "Feminine Energies",
-        "Paranormal Psychology",
-        "Relationship coaching",
+        "Body-based practices for releasing freeze",
+        "Body scans, grounding exercises, and muscle relaxation",
+        "Reconnecting with physical sensations and awareness",
       ],
     },
     {
-      title: "Guest Lectures on (16 hours)",
+      title: "Chapter 5: Cultivating Emotional Awareness and Expression",
       topics: [
-        "Graphology",
-        "Confidence building & communication",
-        "Dream analysis",
-        "Life coaching",
-        "Couples therapy",
-        "Feminine Energies",
-        "Paranormal Psychology",
-        "Relationship coaching",
+        "Role of suppressed emotions in freeze",
+        "Processing repressed feelings",
+        "Expressing emotions through journaling, drawing, and therapy",
+      ],
+    },
+    {
+      title:
+        "Chapter 6: Building Mind-Body Connection with Mindfulness and Breathwork",
+      topics: [
+        "Mindful practices to break through immobilization",
+        "Breathwork, meditation, and awareness exercises",
+        "Developing inner stillness and reducing anxiety",
+      ],
+    },
+    {
+      title:
+        "Chapter 7: Moving from Freeze to Flow: Physical Activity as Therapy",
+      topics: [
+        "Physical activities to transition from freeze",
+        "Gentle stretching, yoga, and dance",
+        "Creating routines for physical and emotional movement",
+      ],
+    },
+    {
+      title: "Chapter 8: Self-Compassion and Healing Trauma",
+      topics: [
+        "Cultivating self-compassion and forgiveness",
+        "Healing from past freeze responses",
+        "Exercises for self-acceptance and self-care",
+      ],
+    },
+    {
+      title: "Chapter 9: Rebuilding Connections and Communicating Your Needs",
+      topics: [
+        "Impact of freeze on relationships",
+        "Rebuilding trust and intimacy",
+        "Opening up, setting boundaries, and expressing emotional needs",
+      ],
+    },
+    {
+      title:
+        "Chapter 10: Beyond Freeze: Developing Resilience for Lasting Growth",
+      topics: [
+        "Resilience-building practices for lasting growth",
+        "Recognizing freeze triggers and preventive actions",
+        "Sustaining growth beyond initial healing phase",
       ],
     },
   ];
@@ -131,15 +158,16 @@ function VideoPlayerSection() {
   return (
     <section className="flex flex-col md:flex-row justify-between items-center gap-8 mt-[11.31rem]">
       <div>
-        <p className="text-lightBlue font-bold text-2xl">Our Course Content</p>
+        <p className="text-lightBlue font-bold text-2xl">Our Book Content</p>
         <p className="text-customLightGray text-[1.2rem] mt-4 mb-8">
-          Online courses and training designed to provide you with a deeply
-          immersive and enjoyable learning experience{" "}
+          A transformative guide designed to help you reconnect with yourself
+          and move forward with clarity and resilience.
         </p>
+
         <Dialog>
           <DialogTrigger asChild>
             {/* <MainButton
-                text="Enroll Now"
+                text="Book Now"
                 classes="shadow-none w-[10.125rem]"
               /> */}
             <Button className="!h-[3.01544rem] hover:bg-white w-[8.2925rem] text-lightBlue font-bold text-[1rem] rounded-[6.25rem] border-[4px] border-[#EBEAED] bg-white shadow-none">
@@ -148,101 +176,103 @@ function VideoPlayerSection() {
           </DialogTrigger>
           <DialogContent className="fixed left-[50%] top-[60%] w-full max-w-[800px] min-h-[90vh] sm:max-w-[800px] overflow-y-scroll max-h-screen ">
             <DialogHeader>
-              <DialogTitle>More About Course</DialogTitle>
+              <DialogTitle>More About Book</DialogTitle>
             </DialogHeader>
+
             <div className="p-6 mt-4 border rounded-lg shadow-sm space-y-6">
-              <h2 className="text-2xl font-semibold">About the course</h2>
+              <h2 className="text-2xl font-semibold">About the Book</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex items-center space-x-4">
                   <CalendarDays color="#ff6600" />
                   <div>
-                    <p className="font-semibold">Start date</p>
-                    <p>Starts 08 October 2024</p>
+                    <p className="font-semibold">Publish Date</p>
+                    <p>08 October 2024</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Clock color="#ff6600" />
                   <div>
-                    <p className="font-semibold">Time</p>
+                    <p className="font-semibold">Reading Time</p>
                     <p>16hrs | 6 weeks</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <UserRound color="#ff6600" />
                   <div>
-                    <p className="font-semibold">Who this course is for</p>
+                    <p className="font-semibold">Who this book is for</p>
                     <p>
-                      For Mental Health Professionals, Health Professionals &
-                      Coaches
+                      For anyone seeking emotional healing and self-awareness
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <GraduationCap color="#ff6600" />
+                  <Book color="#ff6600" />
                   <div>
-                    <p className="font-semibold">Accreditation</p>
-                    <p>16 CE/CME</p>
+                    <p className="font-semibold">Format</p>
+                    <p>eBook</p>
                   </div>
                 </div>
               </div>
 
               <p className="text-gray-700">
-                This action-packed and interactive 6-week course allows you
-                total flexibility to learn whenever it suits you and access a
-                whole range of powerful resources that simply aren’t available
-                anywhere else. Between 2 to 3 hours of new content will be
-                released, week-by-week, over a 6-week period (16 hours in
-                total). Plus, on top of that, you’ll have an extra 16 weeks of
-                access to the whole course, so you can watch all your favorite
-                videos again (and if you’ve fallen behind due to sickness, or
-                taking a vacation, or work commitments etc, this will give you
-                plenty of time to catch up again).
+                *Healing from the Functional Freeze State* is a transformative
+                guide that helps you understand and overcome the immobilizing
+                effects of stress and trauma. Whether you are someone who has
+                experienced emotional numbness or simply looking to regain a
+                deeper connection with your body and mind, this book offers
+                practical techniques, exercises, and expert insights to support
+                your healing journey. It’s designed for those who want to break
+                free from the freeze response and regain emotional balance,
+                offering tools that can be applied immediately for lasting
+                change.
               </p>
             </div>
+
             <div className="flex flex-col items-center justify-center mt-4">
               <h2 className="text-2xl font-semibold">What you'll learn</h2>
               <div className="mt-8">
-                <h2 className="text-xl font-bold mb-4">Course Goals</h2>
+                <h2 className="text-xl font-bold mb-4">Book's Objective</h2>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <span className="mr-2">—</span>
                     <span>
-                      Get versatile with values and dance around with defusion
+                      Understand how the body responds with immobilization in
+                      stressful situations
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="mr-2">—</span>
                     <span>
-                      Discover five powerful tools to develop and strengthen
-                      psychological acceptance
+                      Recognize the signs and symptoms of functional freeze,
+                      including numbness and emotional detachment
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="mr-2">—</span>
                     <span>
-                      Create focus, flexibility and fulfillment through
-                      contacting the present moment
+                      Learn somatic techniques for releasing the freeze state,
+                      such as grounding exercises and body scans
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="mr-2">—</span>
                     <span>
-                      Empower through acceptance and liberate through
-                      self-as-context
+                      Cultivate emotional awareness and expression through
+                      journaling and self-reflection
                     </span>
                   </li>
                   <li className="flex items-start">
                     <span className="mr-2">—</span>
                     <span>
-                      Ten powerful ways to rapidly reduce the believability of
-                      negative thoughts (without ever challenging them)
+                      Use mindfulness and breathwork to overcome the
+                      immobilization of the freeze state
                     </span>
                   </li>
                 </ul>
               </div>
 
               <div className="w-[77%] mt-8">
-                <h2 className="text-xl font-bold mb-2">Course modules</h2>
+                <h2 className="text-xl font-bold mb-2">Book Roadmap</h2>
                 <Accordion type="single" collapsible>
                   {coursesData.map((course, index) => (
                     <AccordionItem key={index} value={`item-${index}`}>
@@ -250,9 +280,14 @@ function VideoPlayerSection() {
                         {course.title}
                       </AccordionTrigger>
                       <AccordionContent>
-                        <ul>
+                        <ul className="list-none pl-5 space-y-2">
                           {course.topics.map((topic, topicIndex) => (
-                            <li key={topicIndex}>{topic}</li>
+                            <li key={topicIndex} className="relative pl-4">
+                              <span className="absolute left-0 top-0 text-xl text-orange-500">
+                                •
+                              </span>
+                              {topic}
+                            </li>
                           ))}
                         </ul>
                       </AccordionContent>

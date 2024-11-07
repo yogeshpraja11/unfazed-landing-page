@@ -9,34 +9,34 @@ function TestimonialSection() {
       imageUrl: "/images/rayhan.jpg",
       reviewerName: "Rayhan Curran",
       review:
-        "I find the way the course is taught a balance of theory and practice an excellent way to learn, and love the videos and mindfulness exercises that are great for clients",
+        "This book offers a perfect blend of theory and practical exercises, making it easy to understand and apply. The somatic practices and mindfulness exercises are transformative!",
     },
-
     {
       id: 1,
       imageUrl: "/images/kayley.jpg",
       reviewerName: "Kayley Frame",
       review:
-        "Because it is filled with many handy pointers for this type of work and excellent video examples to really see these tips and strategies in action.",
+        "Filled with helpful insights and real-life examples, this book provides powerful strategies for overcoming feelings of being ‘stuck’ and reconnecting with oneself.",
     },
     {
       id: 2,
       imageUrl: "/images/gene.jpg",
       reviewerName: "Gene Whitfield",
       review:
-        "It is broken down really well to understand each element in easily manageable chunks so you can really see how the model comes together and how to apply it in your day to day practice. ",
+        "The book breaks down complex concepts into manageable sections, making it easy to follow. It offers clear steps for moving beyond immobilization in daily life.",
     },
     {
       id: 3,
       imageUrl: "/images/alan.jpg",
       reviewerName: "Allan Kim",
       review:
-        "It makes ACT very practical and easy to understand. The demos also help me learn and give me confidence that I can work this in to short term therapy.",
+        "Practical and accessible, this book demystifies the freeze response and gives me the confidence to apply these techniques in my own healing journey.",
     },
   ];
+
   return (
     <section className="mt-[9rem]">
-      <Header subtitle="What people are saying about our courses" />
+      <Header subtitle="What people are saying about our book" />
       <div className="grid grid-cols-1 gap-16  md:grid-cols-2 mt-8 md:mt-[6.75rem]">
         {appReviewData.map((review) => (
           <TestimonialCard

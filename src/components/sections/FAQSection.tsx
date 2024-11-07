@@ -12,27 +12,28 @@ function FAQSection() {
   const faqsData = [
     {
       id: 0,
-      question: "What is therapy, and how can it help me?",
+      question: "What is the 'Functional Freeze State'?",
       answer:
-        "Therapy is a collaborative process where you work with a trained mental health professional to explore your thoughts, feelings, and behaviors. It helps you understand and manage your emotions, resolve personal challenges, and improve your overall well-being.",
+        "The 'Functional Freeze State' is a natural response to overwhelming stress where the body and mind can feel immobilized or stuck. Our book explains how this state occurs and provides guidance on moving beyond it.",
     },
     {
       id: 1,
-      question: "Is therapy confidential?",
+      question: "How can this book help me overcome feeling 'stuck'?",
       answer:
-        "Yes, therapy sessions are confidential. Your therapist will explain the exceptions to confidentiality during your first session.",
+        "This book offers practical tools, self-assessment guides, and exercises to help you understand your freeze triggers and gently work through them, moving towards greater freedom and emotional resilience.",
     },
     {
       id: 2,
-      question: "How do I know if I need therapy?",
+      question:
+        "Is this book suitable for someone with no prior knowledge of trauma or therapy?",
       answer:
-        "If you're experiencing emotional, mental, or behavioral challenges that impact your daily life, therapy can provide support and strategies for coping and improving your well-being.",
+        "Absolutely. The book is written in an accessible way for anyone wanting to understand and heal from freeze responses. It explains concepts simply and offers step-by-step practices suitable for beginners.",
     },
     {
       id: 3,
-      question: "How do I choose the right therapist for me?",
+      question: "What makes this book different from other self-help books?",
       answer:
-        "Choosing the right therapist involves finding someone who you feel comfortable with and who has experience in addressing your specific concerns. You may want to have an initial consultation to see if the therapist is a good fit.",
+        "This book focuses specifically on the freeze response, a topic often overlooked. It combines easy-to-understand science with somatic practices, mindfulness, and emotional support techniques designed to help readers break free from immobilization.",
     },
   ];
 
