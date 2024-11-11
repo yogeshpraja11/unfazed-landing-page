@@ -4,7 +4,7 @@ import Header from "../common/Header";
 function ServiceSection() {
   return (
     <section className="pt-[2rem]">
-      <Header subtitle="About This Book" />
+      <Header subtitle="About This EBook" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[3.56rem] justify-around mt-8 md:mt-[6.75rem]">
         {/* First Service Card */}
         <div className="flex flex-grow flex-col gap-[1rem] pt-[2rem] pb-[2rem] px-[2rem] items-center service-card-shadow rounded-[0.75rem]">
@@ -13,9 +13,10 @@ function ServiceSection() {
               <img src="/images/mental-health-therapy.jpg" alt="service icon" />
             </div>
             <p className="flex-[0.5] mt-8 text-normal w-full">
-              With a proven track record of helping over <strong>1,000</strong>{" "}
-              readers, this book empowers individuals to overcome immobilizing
-              stress and regain balance in life.
+              With a proven track record of helping over{" "}
+              <strong>10,000+</strong> readers, this book empowers individuals
+              to overcome the functional freeze state and regain balance in
+              life.
             </p>
           </div>
         </div>
@@ -98,7 +99,7 @@ function ServiceSection() {
             </svg>
           </div>
           <p className="flex-[0.6] mt-6 text-normal w-full">
-            A growing community of over <strong>20,000</strong> readers connects
+            A growing community of over <strong>225K </strong> readers connects
             here, fostering healing, growth, and shared understanding on the
             journey to resilience.
           </p>

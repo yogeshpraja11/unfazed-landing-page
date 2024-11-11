@@ -281,7 +281,7 @@ function HeroSection() {
             </DialogTrigger>
             <DialogContent className="w-full max-w-[800px] sm:max-w-[800px]">
               <DialogHeader>
-                <DialogTitle>Enroll</DialogTitle>
+                <DialogTitle>Book Now</DialogTitle>
                 {/* <DialogDescription>
                   Make changes to your profile here. Click save when you're
                   done.
@@ -481,19 +481,48 @@ function HeroSection() {
                     <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold">
                       Registered
                     </h1>
-                    <p className="text-gray-500 mt-2 flex text-center">
+                    {/* <p className="text-gray-500 mt-2 flex text-center">
                       Our team will contact you soon...
                       <PhoneCall color="#ff6600" className="ml-1" />
-                    </p>
+                    </p> */}
 
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-6">
-                      Book Now, Book Your Slot!
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-4">
+                      Pay Now, Get Your eBook!
                     </h2>
-                    <p className="text-center text-gray-500 mt-2 text-sm sm:text-base lg:text-lg">
+                    {/* <p className="text-center text-gray-500 mt-2 text-sm sm:text-base lg:text-lg">
                       This feature is available for paid users only. Please, pay
                       now or book your seat to get full access to all our
                       course. Don’t miss out!
-                    </p>
+                    </p> */}
+
+                    <div className="pt-4 px-6 text-center bg-gray-50 dark:bg-gray-900 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center">
+                      <p className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+                        Limited Time Offer, First 500 readers only
+                      </p>
+                      <div className="">
+                        <span
+                          // style="opacity:0.5"
+                          className="font-mono text-xl md:text-lg font-medium text-gray-400 dark:text-gray-400"
+                        >
+                          $
+                        </span>
+                        <span
+                          // style="opacity:0.5"
+                          className="h1 line-through text-gray-600 dark:text-gray-400"
+                        >
+                          129
+                        </span>{" "}
+                        <span className="text-red-600 text-sm">
+                          Special promotion
+                        </span>
+                      </div>
+                      <div className="mt-4 flex items-center justify-center text-5xl font-extrabold text-gray-900 dark:text-white">
+                        <span>$39.99</span>
+                        <span className="ml-3 text-xl font-medium text-gray-500 dark:text-gray-400">
+                          USD
+                        </span>
+                      </div>
+                    </div>
 
                     <Button
                       onClick={handlePayment}
@@ -549,10 +578,11 @@ function HeroSection() {
           </div>
         </div>
       </div>
-      <div>
+      <div className="flex justify-center items-center">
         <img
-          src="/images/happy_guy.png"
+          src="/images/main_image.jpg"
           alt="guy with phone surrounded by action icons"
+          className="w-full max-w-[80%] h-auto max-h-[80%] object-contain"
         />
       </div>
     </section>

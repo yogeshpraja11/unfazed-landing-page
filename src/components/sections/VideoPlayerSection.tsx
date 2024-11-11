@@ -16,7 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import MainButton from "../common/MainButton";
-import VideoPlayerControls from "../common/VideoPlayerControls";
+// import VideoPlayerControls from "../common/VideoPlayerControls";
 import {Button} from "../ui/button";
 import Image from "next/image";
 import {
@@ -299,17 +299,12 @@ function VideoPlayerSection() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="relative w-[90%] max-w-4xl max-h-[28rem] mx-auto my-8 rounded-xl overflow-hidden">
-        <div className="absolute top-4 right-4 z-10">
-          <VideoPlayerControls
-            progress={videoProgress}
-            isPaused={isPaused}
-            onPlayPause={togglePlayPause}
-          />
-        </div>
-        <video className="w-[60rem]" ref={videoRef}>
-          <source src="/video.mp4" type="video/mp4" />
-        </video>
+      <div className="flex justify-center items-center w-[90%] max-w-4xl max-h-[28rem] mx-auto my-8 rounded-xl">
+        <img
+          src="/images/book_image.jpg"
+          alt="book_image"
+          className="w-full max-w-[80%] h-auto max-h-[80%] object-contain rounded-xl"
+        />
       </div>
     </section>
   );
