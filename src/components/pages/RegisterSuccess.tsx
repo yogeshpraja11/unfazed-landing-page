@@ -1,12 +1,10 @@
 import Link from "next/link";
-import {useRouter} from "next/router";
+import {useSearchParams} from "next/navigation";
 import React from "react";
 
 function RegisterSuccess() {
-  const router = useRouter();
-
-  // Extract the 'link' query parameter from the URL
-  const pdfLink = (router.query.link as string) || "";
+  const searchParams = useSearchParams();
+  const pdfLink = searchParams.get("link") || "";
 
   return (
     <div
