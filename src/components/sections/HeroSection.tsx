@@ -39,6 +39,7 @@ import {DateTimePicker} from "../ui/datetime-picker";
 import {useRouter} from "next/navigation";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import Link from "next/link";
 
 const FormSchema = z.object({
   dob: z.date({
@@ -75,6 +76,7 @@ function HeroSection() {
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [countryph, setCountryph] = useState("us");
   const {toast} = useToast();
   const router = useRouter();
 
@@ -201,9 +203,12 @@ function HeroSection() {
   };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log({data});
+    if (data.phoneNumber?.startsWith("91")) {
+      setCountryph("ind");
+    }
     try {
       const formData = new FormData();
-
       Object.entries(data).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
           // Check if the value is a Date object or a valid date string
@@ -499,37 +504,73 @@ function HeroSection() {
                       <p className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
                         Limited Time Offer, First 500 readers only
                       </p>
-                      <div className="">
-                        <span
-                          // style="opacity:0.5"
-                          className="font-mono text-xl md:text-lg font-medium text-gray-400 dark:text-gray-400"
-                        >
-                          $
-                        </span>
-                        <span
-                          // style="opacity:0.5"
-                          className="h1 line-through text-gray-600 dark:text-gray-400"
-                        >
-                          129
-                        </span>{" "}
-                        <span className="text-red-600 text-sm">
-                          Special promotion
-                        </span>
-                      </div>
-                      <div className="mt-4 flex items-center justify-center text-5xl font-extrabold text-gray-900 dark:text-white">
-                        <span>$39.99</span>
-                        <span className="ml-3 text-xl font-medium text-gray-500 dark:text-gray-400">
-                          USD
-                        </span>
-                      </div>
+                      {countryph === "ind" ? (
+                        <>
+                          {" "}
+                          <div className="">
+                            <span
+                              // style="opacity:0.5"
+                              className="font-mono text-xl md:text-lg font-medium text-gray-400 dark:text-gray-400"
+                            >
+                              ₹
+                            </span>
+                            <span
+                              // style="opacity:0.5"
+                              className="h1 line-through text-gray-600 dark:text-gray-400"
+                            >
+                              2500
+                            </span>{" "}
+                            <span className="text-red-600 text-sm">
+                              Special promotion
+                            </span>
+                          </div>
+                          <div className="mt-4 flex items-center justify-center text-5xl font-extrabold text-gray-900 dark:text-white">
+                            <span>₹499</span>
+                            <span className="ml-3 text-xl font-medium text-gray-500 dark:text-gray-400">
+                              INR
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          <div className="">
+                            <span
+                              // style="opacity:0.5"
+                              className="font-mono text-xl md:text-lg font-medium text-gray-400 dark:text-gray-400"
+                            >
+                              $
+                            </span>
+                            <span
+                              // style="opacity:0.5"
+                              className="h1 line-through text-gray-600 dark:text-gray-400"
+                            >
+                              129
+                            </span>{" "}
+                            <span className="text-red-600 text-sm">
+                              Special promotion
+                            </span>
+                          </div>
+                          <div className="mt-4 flex items-center justify-center text-5xl font-extrabold text-gray-900 dark:text-white">
+                            <span>$39.99</span>
+                            <span className="ml-3 text-xl font-medium text-gray-500 dark:text-gray-400">
+                              USD
+                            </span>
+                          </div>
+                        </>
+                      )}
                     </div>
 
-                    <Button
-                      onClick={handlePayment}
+                    <Link
+                      href={
+                        countryph === "ind"
+                          ? "https://rzp.io/rzp/wweNi4EM"
+                          : "https://www.paypal.com/ncp/payment/DZGGQESRKJY4Q"
+                      }
                       className="mt-6 bg-primary hover:opacity-90 hover:bg-secondary text-white py-2 px-6 rounded-full shadow-none text-sm sm:text-base lg:text-lg"
                     >
                       PAY NOW
-                    </Button>
+                    </Link>
                   </div>
                 </>
               )}
